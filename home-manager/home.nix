@@ -4,9 +4,6 @@
 {
 # You can import other home-manager modules here
 	imports = [
-# If you want to use home-manager modules from other flakes (such as nix-colors):
-# inputs.nix-colors.homeManagerModule
-
 # You can also split up your configuration and import pieces of it here:
 # ./nvim.nix
 	];
@@ -36,6 +33,16 @@
 	home = {
 		username = "tejas";
 		homeDirectory = "/home/tejas";
+		sessionVariables = {
+			EDITOR = "nvim";
+			BROWSER = "firefox";
+			TERMINAL = "kitty";
+		};
+	};
+
+	programs.kitty = {
+		enable = true;
+		extraConfig = builtins.readFile ../kitty.conf;
 	};
 
 # Add stuff for your user as you see fit:
@@ -51,7 +58,55 @@
 		vimAlias = true;
 		vimdiffAlias = true;
 
+		extraPackages = with pkgs; [
+			lua-language-server
+				rnix-lsp
+
+				xclip
+				wl-clipboard
+		];
+
 		plugins = with pkgs.vimPlugins; [
+
+		{
+			plugin = nvim-lspconfig;
+			config = toLuaFile ../nvim/plugins/lsp.lua;
+		}
+
+		neodev-nvim
+
+		{
+			plugin = nvim-cmp;
+			config = toLuaFile ../nvim/plugins/cmp.lua;
+		}
+
+		{
+			plugin = telescope-nvim;
+			config = toLuaFile ../nvim/plugins/telescope.lua;
+		}
+    plenary-nvim 
+
+		telescope-fzf-native-nvim
+			cmp_luasnip
+			cmp-nvim-lsp
+			luasnip
+			friendly-snippets
+			lualine-nvim
+			nvim-web-devicons
+
+			{
+				plugin = (nvim-treesitter.withPlugins (p: [
+							p.tree-sitter-nix
+							p.tree-sitter-vim
+							p.tree-sitter-bash
+							p.tree-sitter-lua
+							p.tree-sitter-python
+							p.tree-sitter-json
+				]));
+				config = toLuaFile ../nvim/plugins/treesitter.lua;
+			}
+
+		vim-nix
 
 		{
 			plugin = comment-nvim;
@@ -62,11 +117,17 @@
 			plugin = tokyonight-nvim;
 			config = toLuaFile ../nvim/plugins/tokyonight.lua;
 		}
+
+		{
+			plugin = lualine-nvim;
+			config = toLuaFile ../nvim/plugins/lualine.lua;
+		}
+
 		];
 
 		extraLuaConfig = ''
 			${builtins.readFile ../nvim/options.lua}
-			${builtins.readFile ../nvim/remap.lua}
+		${builtins.readFile ../nvim/remap.lua}
 		'';
 	};
 # home.packages = with pkgs; [ steam ];
