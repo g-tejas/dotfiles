@@ -60,7 +60,7 @@
 
 		{
 			plugin = tokyonight-nvim;
-			config = "colorscheme tokyonight-moon";
+			config = toLuaFile ../nvim/plugins/tokyonight.lua;
 		}
 		];
 
