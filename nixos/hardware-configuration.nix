@@ -6,18 +6,18 @@
 {
   imports = [ ];
 
-  boot.initrd.availableKernelModules = [ "virtio_pci" "xhci_pci" "usbhid" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/57c7798a-8217-4b39-975d-7fd6806f959e";
+    { device = "/dev/disk/by-uuid/972d460f-3507-4933-b807-860094bee8ec";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/1120-772D";
+    { device = "/dev/disk/by-uuid/3E32-5AFB";
       fsType = "vfat";
     };
 
@@ -28,7 +28,9 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s5.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
+  hardware.parallels.enable = true;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "prl-tools" ];
 }

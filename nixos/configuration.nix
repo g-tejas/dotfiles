@@ -42,18 +42,8 @@
     LC_TIME = "en_SG.UTF-8";
   };
 
-  # systemd.services.myscript = {
-  #         description = "Set wallpaper";
-  #         script = "/home/tejas/.screenlayout/default.sh";
-  #         wantedBy = [ "multi-user.target" ];
-  # };
-
-  # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.gdm.enable = true;
-  services.picom.enable = true;
- 
-  # Configure keymap in X11
-  services.xserver = {
+  # Enable the X11 windowing system.
+    services.xserver = {
     enable = true;
 
     desktopManager = {
@@ -74,6 +64,20 @@
      ];
     };
   };
+
+  services.xserver = {
+# Configure keymap in X11
+	  layout = "us";
+	  xkbVariant = "";
+  };
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = false;
+  services.xserver.desktopManager.gnome.enable = false;
+
+  # I use zsh btw
+  environment.shells = with pkgs; [ zsh ];
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -109,36 +113,33 @@
     ];
   };
 
+  # Enable automatic login for the user.
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "tejas";
+
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
+  # Allow nix-command and flakes
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+    environment.pathsToLink = [ "/libexec" ]; # links /libexec from derivations to /run/current-system/sw 
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
-    vscode
-    kitty
-    zoxide
-    arandr
-    nitrogen
-    neofetch
-    gh
-    lazygit
-    magic-wormhole
-    qutebrowser
-		home-manager
-  #  wget
+     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+     wget
   ];
 
-  fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = ["FiraCode" "DroidSansMono"]; })
-  ];
-
-  environment.shellAliases = {
-    lg = "lazygit";
-  };
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+ };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -165,6 +166,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 
 }
