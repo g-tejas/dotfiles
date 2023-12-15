@@ -1,8 +1,8 @@
 { config, pkgs, ... }: 
 let 
   myAliases = {
-      update =  "sudo nixos-rebuild switch --flake /home/tejas/git/dotfiles";
-      updatehome = "home-manager switch --flake /home/tejas/git/dotfiles";
+      update =  "sudo nixos-rebuild switch --flake /home/tejas/dotfiles";
+      updatehome = "home-manager switch --flake /home/tejas/dotfiles";
       lg = "lazygit";
   };
 in
