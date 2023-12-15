@@ -136,7 +136,7 @@
   environment.systemPackages = with pkgs; [
      vim
      wget
-     home-manager
+     git
   ];
 
   programs.neovim = {
