@@ -10,6 +10,3 @@ echo "Copying 'hardware-configuration.nix' to current flake and overwritten if i
 
 sudo nixos-rebuild switch --flake .
 
-nix-shell '<home-manager>' -A install
-
-home-manager switch --flake .
