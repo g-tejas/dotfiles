@@ -84,11 +84,27 @@
   };
 
 
-  programs.neovim = {
+  programs.neovim =
+  let 
+  	toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
+  in
+  {
     enable = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+
+	plugins = with pkgs.vimPlugins; [
+		{
+			plugin = comment-nvim;
+			type = "lua";
+			config = "require(\"Comment\").setup()";
+		}
+		{
+			plugin = tokyonight-nvim;
+			config = toLuaFile ../nvim/plugin/tokyo.lua;
+		}
+	];
 
     extraConfig = ''
     	luafile ${../nvim/options.lua}
