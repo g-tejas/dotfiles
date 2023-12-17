@@ -18,3 +18,5 @@ If in git repo, need to add to commit first.
 
 ## Alacritty Configuration
 https://sunnnychan.github.io/cheatsheet/linux/config/alacritty.yml.html
+
+When running on a new pc, make sure to change the user and host names since it might be diff.
