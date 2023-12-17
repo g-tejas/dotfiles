@@ -104,6 +104,13 @@
 			plugin = tokyonight-nvim;
 			config = toLuaFile ../nvim/plugin/tokyo.lua;
 		}
+		plenary-nvim
+
+		{
+			plugin = harpoon;
+			config = toLuaFile ../nvim/plugin/harpoon.lua;
+		}
+
 	];
 
     extraConfig = ''
