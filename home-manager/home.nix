@@ -91,7 +91,7 @@
     vimdiffAlias = true;
 
     extraConfig = ''
-      ${builtins.readFile ../nvim/options.lua}
+    	luafile ${../nvim/options.lua}
     '';
   };
 
