@@ -83,8 +83,19 @@
     enable = true;
   };
 
-  services.picom.enable = true;
 
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+
+    extraConfig = ''
+      ${builtins.readFile ../nvim/options.lua}
+    '';
+  };
+
+  services.picom.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
