@@ -106,6 +106,7 @@
 		telescope-nvim
 		telescope-fzf-native-nvim
 		harpoon
+		nvim-treesitter.withAllGrammars
 	];
 
     extraConfig = ''
@@ -113,6 +114,7 @@
     	luafile ${../nvim/plugin/tokyo.lua}
     	luafile ${../nvim/plugin/harpoon.lua}
     	luafile ${../nvim/plugin/telescope.lua}
+    	luafile ${../nvim/plugin/treesitter.lua}
     '';
   };
 
