@@ -100,21 +100,15 @@
 			type = "lua";
 			config = "require(\"Comment\").setup()";
 		}
-		{
-			plugin = tokyonight-nvim;
-			config = toLuaFile ../nvim/plugin/tokyo.lua;
-		}
+		tokyonight-nvim
 		plenary-nvim
-
-		{
-			plugin = harpoon;
-			config = toLuaFile ../nvim/plugin/harpoon.lua;
-		}
-
+		harpoon
 	];
 
     extraConfig = ''
     	luafile ${../nvim/options.lua}
+    	luafile ${../nvim/plugin/tokyo.lua}
+    	luafile ${../nvim/plugin/harpoon.lua}
     '';
   };
 
