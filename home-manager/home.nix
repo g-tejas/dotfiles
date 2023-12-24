@@ -26,6 +26,7 @@
     zoxide
     alacritty
     neofetch
+	ripgrep
     lazygit
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -102,6 +103,8 @@
 		}
 		tokyonight-nvim
 		plenary-nvim
+		telescope-nvim
+		telescope-fzf-native-nvim
 		harpoon
 	];
 
@@ -109,6 +112,7 @@
     	luafile ${../nvim/options.lua}
     	luafile ${../nvim/plugin/tokyo.lua}
     	luafile ${../nvim/plugin/harpoon.lua}
+    	luafile ${../nvim/plugin/telescope.lua}
     '';
   };
 
