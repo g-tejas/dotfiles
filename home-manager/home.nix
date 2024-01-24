@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -21,13 +21,13 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    hello
-    thefuck
-    zoxide
-    alacritty
-    neofetch
-	ripgrep
-    lazygit
+    pkgs.hello
+    pkgs.thefuck
+    pkgs.zoxide
+    pkgs.alacritty
+    pkgs.neofetch
+    pkgs.ripgrep
+    pkgs.lazygit
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -77,46 +77,19 @@
   programs.git = {
     enable = true;
     userName = "g-tejas";
-    userEmail = "ttejasgarrepally@gmail.com";
+    userEmail = "code@gtejas.com";
   };
 
   programs.gh = {
     enable = true;
   };
 
-
-  programs.neovim =
-  let 
-  	toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
-  in
-  {
+  programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-
-	plugins = with pkgs.vimPlugins; [
-		{
-			plugin = comment-nvim;
-			type = "lua";
-			config = "require(\"Comment\").setup()";
-		}
-		tokyonight-nvim
-		plenary-nvim
-		telescope-nvim
-		telescope-fzf-native-nvim
-		harpoon
-		nvim-treesitter.withAllGrammars
-	];
-
-    extraConfig = ''
-    	luafile ${../nvim/options.lua}
-    	luafile ${../nvim/plugin/tokyo.lua}
-    	luafile ${../nvim/plugin/harpoon.lua}
-    	luafile ${../nvim/plugin/telescope.lua}
-    	luafile ${../nvim/plugin/treesitter.lua}
-    '';
-  };
+  }; 
 
   services.picom.enable = true;
 

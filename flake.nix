@@ -5,7 +5,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-	nixvim-flake.url = "github:g-tejas/nixvim";
+    nixvim-flake.url = "github:g-tejas/nixvim";
   }; 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs: 
     let 
@@ -14,7 +14,8 @@
       inherit (self) outputs;
     in {
     nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
+       nixos = nixpkgs.lib.nixosSystem {
+       	specialArgs = inputs;
         inherit system;
 	modules = [ ./nixos/configuration.nix ];
       };
