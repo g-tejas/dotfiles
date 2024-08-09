@@ -23,7 +23,7 @@ setup_ubuntu() {
 setup_redhat() {
   sudo yum update
   sudo yum install -y python3 ansible git
-  bash bootstrap.yml
+  ansible-playbook bootstrap.yml --ask-become-pass -vv
 }
 
 if [ "$result" = "1" ]; then
