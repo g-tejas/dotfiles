@@ -23,7 +23,7 @@ setup_ubuntu() {
 setup_redhat() {
   sudo yum update
   sudo yum install -y python3 ansible git
-  bash bootstrap.sh
+  bash bootstrap.yml
 }
 
 if [ "$result" = "1" ]; then
