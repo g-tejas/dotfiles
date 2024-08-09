@@ -2,9 +2,34 @@
 - name: Bootstrap development environment
   hosts: localhost
   vars:
-    source_key: "./ssh/id_ed25519"
+    git_dir: "{{ ansible_env.HOME }}/git"
+    dotfiles_dir: "{{ git_dir }}/dotfiles"
+    source_key: "{{ dotfiles_dir }}/ssh/id_ed25519"
     dest_key: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
   tasks:
+    - name: Install packages with apt
+      apt:
+        name: 
+          - git
+          - tmux
+        state: latest
+      when: ansible_distribution != "MacOSX"
+    - name: Install packages with homebrew
+      homebrew:
+        name: 
+          - git
+          - tmux
+        state: latest
+      when: ansible_distribution == "MacOSX"
+    - name: Create ~/git directory
+      file:
+        path: "{{ git_dir }}"
+        state: directory
+        mode: 0755
+    - name: Clone the dotfiles repository
+      git:
+        repo: git@github.com:g-tejas/dotfiles.git
+        dest: "{{ dotfiles_dir }}"
     - name: Ensure the SSH directory exists
       become_user: root
       file:
@@ -29,10 +54,5 @@
         state: present
         key: "{{ lookup('file', item) }}"
       with_fileglob:
-      - ssh/*.pub
-    - name: Create ~/git directory
-      file:
-        path: "{{ ansible_env.HOME }}/git"
-        state: directory
-        mode: 0755
-      
+        - "{{ dotfiles_dir }}/ssh/*.pub"
+    
