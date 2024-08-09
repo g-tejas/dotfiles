@@ -13,7 +13,6 @@
         name: 
           - git
           - tmux
-          - gum
         state: latest
       when: ansible_facts['os_family'] == "RedHat"
     - name: Install packages with homebrew
@@ -21,7 +20,6 @@
         name: 
           - git
           - tmux
-          - gum
         state: latest
       when: ansible_facts['os_family'] == "Darwin"
     - name: Create ~/git directory
