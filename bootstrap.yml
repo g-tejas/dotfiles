@@ -30,7 +30,7 @@
         mode: 0755
     - name: Clone the dotfiles repository
       git:
-        repo: git@github.com:g-tejas/dotfiles.git
+        repo: https://github.com/g-tejas/dotfiles.git
         dest: "{{ dotfiles_dir }}"
     - name: Ensure the SSH directory exists
       become_user: root
