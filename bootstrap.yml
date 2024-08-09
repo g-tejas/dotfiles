@@ -8,6 +8,7 @@
     dest_key: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
   tasks:
     - name: Install packages with yum
+      become: yes 
       yum:
         name: 
           - git
@@ -15,6 +16,7 @@
         state: latest
       when: ansible_facts['os_family'] == "RedHat"
     - name: Install packages with homebrew
+      become: yes
       homebrew:
         name: 
           - git
