@@ -7,20 +7,20 @@
     source_key: "{{ dotfiles_dir }}/ssh/id_ed25519"
     dest_key: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
   tasks:
-    - name: Install packages with apt
+    - name: Install packages with yum
       apt:
         name: 
           - git
           - tmux
         state: latest
-      when: ansible_distribution != "MacOSX"
+        when: ansible_facts['os_family'] == "RedHat"
     - name: Install packages with homebrew
       homebrew:
         name: 
           - git
           - tmux
         state: latest
-      when: ansible_distribution == "MacOSX"
+      when: ansible_facts['os_family'] == "Darwin"
     - name: Create ~/git directory
       file:
         path: "{{ git_dir }}"
