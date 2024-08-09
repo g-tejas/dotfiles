@@ -1,5 +1,5 @@
 ---
-- name: Setup repo
+- name: Bootstrap development environment
   hosts: localhost
   vars:
     source_key: "./ssh/id_ed25519"
@@ -30,11 +30,9 @@
         key: "{{ lookup('file', item) }}"
       with_fileglob:
       - ssh/*.pub
-    - name: Clone the dotfiles repository
-      ansible.builtin.git:
-        repo: 'git@github.com:g-tejas/dotfiles.git'
-        dest: '{{ ansible_env.HOME }}/dotfiles'
-        recursive: yes
-        update: yes
-        accept_hostkey: yes
-        version: master
+    - name: Create ~/git directory
+      file:
+        path: "{{ ansible_env.HOME }}/git"
+        state: directory
+        mode: 0755
+      
