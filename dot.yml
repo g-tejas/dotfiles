@@ -1,0 +1,33 @@
+---
+- name: Setup repo
+  hosts: localhost
+  vars:
+    source_key: "./ssh/test.pub"
+    dest_key: "{{ ansible_env.HOME }}/.ssh/test.pub"
+  tasks:
+    - name: Ensure the SSH directory exists
+      become_user: root
+      ansible.builtin.file:
+        dest: "{{ dest_key | dirname }}"
+        state: directory
+        mode: 0700
+    - name: Decrypt the SSH key
+      ansible.builtin.command: ansible-vault decrypt "{{ source_key }}" --output="{{ dest_key }}"
+      become_user: root
+    - name: Set permissions for the decrypted key
+      ansible.builtin.file:
+        path: "{{ dest_key }}"
+        mode: 0600
+    - name: Set authorized key
+      authorized_key:
+        user: "{{ lookup('env', 'USER') }}"
+        state: present
+        key: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    - name: Clone the dotfiles repository
+      ansible.builtin.git:
+        repo: 'git@github.com:g-tejas/dotfiles.git'
+        dest: '{{ ansible_env.HOME }}/dotfiles'
+        recursive: yes
+        update: yes
+        accept_hostkey: yes
+        version: master
