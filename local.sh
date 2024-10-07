@@ -17,7 +17,7 @@ setup_darwin() {
 setup_ubuntu() {
   sudo apt-get update
   sudo apt-get install -y python3 ansible git
-  bash bootstrap.sh
+  ansible-playbook bootstrap.yml --ask-become-pass -vv
 }
 
 setup_redhat() {
@@ -35,3 +35,4 @@ elif [ "$result" = "3" ]; then
 else
   echo "Invalid input. Please choose a valid option."
 fi
+
