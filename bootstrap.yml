@@ -15,11 +15,23 @@
           - tmux
         state: latest
       when: ansible_facts['os_family'] == "RedHat"
+    - name: Install packages with apt
+      become: yes 
+      apt:
+        name: 
+          - git
+          - tmux
+          - kitty
+          - hyprland
+        state: latest
+      when: ansible_facts['os_family'] == "Debian"
     - name: Install packages with homebrew
       homebrew:
         name: 
           - git
           - tmux
+          - zoxide
+          - fzf
         state: latest
       when: ansible_facts['os_family'] == "Darwin"
     - name: Create ~/git directory
