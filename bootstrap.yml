@@ -8,26 +8,54 @@
     dest_key: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
   tasks:
     - name: Install packages with yum
-      become: yes 
+      become: yes
       yum:
-        name: 
+        name:
           - git
           - tmux
         state: latest
       when: ansible_facts['os_family'] == "RedHat"
     - name: Install packages with apt
-      become: yes 
+      become: yes
       apt:
-        name: 
+        name:
           - git
           - tmux
           - kitty
-          - hyprland
+          - build-essential
+          - libtool
+          - autoconf
+          - unzip
+          - wget
         state: latest
+      when: ansible_facts['os_family'] == "Debian"
+    - name: Build and install CMake from source
+      become: yes
+      vars:
+        cmake_version: "3.30"
+        cmake_build: "5"
+        cmake_dir: "/tmp/cmake-{{ cmake_version }}.{{ cmake_build }}"
+      block:
+        - name: Download and extract CMake source
+          unarchive:
+            src: "https://cmake.org/files/v{{ cmake_version }}/cmake-{{ cmake_version }}.{{ cmake_build }}.tar.gz"
+            dest: /tmp
+            remote_src: yes
+            creates: "{{ cmake_dir }}"
+
+        - name: Build and install CMake
+          shell: |
+            cd {{ cmake_dir }}
+            ./bootstrap
+            make -j$(nproc)
+            make install
+          args:
+            creates: /usr/local/bin/cmake
+
       when: ansible_facts['os_family'] == "Debian"
     - name: Install packages with homebrew
       homebrew:
-        name: 
+        name:
           - git
           - tmux
           - zoxide
@@ -68,4 +96,3 @@
         key: "{{ lookup('file', item) }}"
       with_fileglob:
         - "{{ dotfiles_dir }}/ssh/*.pub"
-    
