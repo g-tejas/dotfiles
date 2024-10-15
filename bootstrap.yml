@@ -27,6 +27,7 @@
           - autoconf
           - unzip
           - wget
+          - libssl-dev
         state: latest
       when: ansible_facts['os_family'] == "Debian"
     - name: Build and install CMake from source
