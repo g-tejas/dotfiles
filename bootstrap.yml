@@ -22,6 +22,7 @@
           - git
           - tmux
           - kitty
+          - pkg-config
           - build-essential
           - libtool
           - autoconf
@@ -64,9 +65,10 @@
             repo: "https://github.com/hyprwm/Hyprland"
             dest: "{{ hyprland_dir }}"
             recursive: yes
-            version: master
+            version: main
 
         - name: Build and install Hyprland
+          become: yes
           shell: |
             cd {{ hyprland_dir }}
             make all
