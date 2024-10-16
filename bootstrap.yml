@@ -54,6 +54,27 @@
             creates: /usr/local/bin/cmake
 
       when: ansible_facts['os_family'] == "Debian"
+    - name: Install Hyprland from source
+      become: yes
+      vars:
+        hyprland_dir: "{{ git_dir }}/Hyprland"
+      block:
+        - name: Clone Hyprland repository
+          git:
+            repo: "https://github.com/hyprwm/Hyprland"
+            dest: "{{ hyprland_dir }}"
+            recursive: yes
+            version: master
+
+        - name: Build and install Hyprland
+          shell: |
+            cd {{ hyprland_dir }}
+            make all
+            make install
+          args:
+            creates: /usr/local/bin/Hyprland
+
+      when: ansible_facts['os_family'] == "Debian"
     - name: Install packages with homebrew
       homebrew:
         name:
