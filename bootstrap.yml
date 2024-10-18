@@ -45,9 +45,6 @@
           apt:
             name: i3
             state: present
-    - name: Apply i3wm role
-      include_role:
-        name: l3d.i3wm
     - name: Build and install CMake from source
       become: yes
       vars:
