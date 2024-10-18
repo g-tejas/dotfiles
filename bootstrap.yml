@@ -7,14 +7,6 @@
     source_key: "{{ dotfiles_dir }}/ssh/id_ed25519"
     dest_key: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
   tasks:
-    - name: Install packages with yum
-      become: yes
-      yum:
-        name:
-          - git
-          - tmux
-        state: latest
-      when: ansible_facts['os_family'] == "RedHat"
     - name: Install packages with apt
       become: yes
       apt:
@@ -22,51 +14,8 @@
           - git
           - tmux
           - kitty
-          - pkg-config
-          - build-essential
-          - libtool
-          - autoconf
           - unzip
           - wget
-          - libssl-dev
-          - libgl1-mesa-dev
-          - meson
-          - ninja-build
-          - cmake-extras
-          - cmake
-          - gettext
-          - gettext-base
-          - fontconfig
-          - libfontconfig-dev
-          - libffi-dev
-          - libxml2-dev
-          - libdrm-dev
-          - libxkbcommon-x11-dev
-          - libxkbregistry-dev
-          - libxkbcommon-dev
-          - libpixman-1-dev
-          - libudev-dev
-          - libseat-dev
-          - seatd
-          - libxcb-dri3-dev
-          - libegl-dev
-          - libgles2
-          - libegl1-mesa-dev
-          - glslang-tools
-          - libinput-bin
-          - libinput-dev
-          - libxcb-composite0-dev
-          - libavutil-dev
-          - libavcodec-dev
-          - libavformat-dev
-          - libxcb-ewmh2
-          - libxcb-ewmh-dev
-          - libxcb-present-dev
-          - libxcb-icccm4-dev
-          - libxcb-render-util0-dev
-          - libxcb-res0-dev
-          - libxcb-xinput-dev
-          - libtomlplusplus3
         state: latest
       when: ansible_facts['os_family'] == "Debian"
     - name: Build and install CMake from source
@@ -93,37 +42,6 @@
             creates: /usr/local/bin/cmake
 
       when: ansible_facts['os_family'] == "Debian"
-    - name: Install Hyprland from source
-      become: yes
-      vars:
-        hyprland_dir: "{{ git_dir }}/Hyprland"
-      block:
-        - name: Clone Hyprland repository
-          git:
-            repo: "https://github.com/hyprwm/Hyprland"
-            dest: "{{ hyprland_dir }}"
-            recursive: yes
-            version: main
-
-        - name: Build and install Hyprland
-          become: yes
-          shell: |
-            cd {{ hyprland_dir }}
-            make all
-            make install
-          args:
-            creates: /usr/local/bin/Hyprland
-
-      when: ansible_facts['os_family'] == "Debian"
-    - name: Install packages with homebrew
-      homebrew:
-        name:
-          - git
-          - tmux
-          - zoxide
-          - fzf
-        state: latest
-      when: ansible_facts['os_family'] == "Darwin"
     - name: Create ~/git directory
       file:
         path: "{{ git_dir }}"
