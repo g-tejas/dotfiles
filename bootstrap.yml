@@ -18,6 +18,11 @@
           - wget
         state: latest
       when: ansible_facts['os_family'] == "Debian"
+    - name: Install i3wm on localhost
+      vars_files:
+        - vars/main.yml
+      roles:
+        - role: l3d.i3wm
     - name: Build and install CMake from source
       become: yes
       vars:
