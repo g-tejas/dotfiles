@@ -1,35 +1,44 @@
 ---
-- name: Get lazygit release information
-  ansible.builtin.command: curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
-  register: lazygit_release_info
+- name: Check if lazygit is already installed
+  ansible.builtin.command: which lazygit
+  register: lazygit_check
+  ignore_errors: yes
+  changed_when: false
 
-- name: Extract lazygit version from release information
-  ansible.builtin.set_fact:
-    lazygit_version: "{{ lazygit_release_info.stdout | regex_search('\"tag_name\": \"v(.*)\"') | regex_replace('\"tag_name\": \"v(.*)\"', '\\1') }}"
+- name: Install lazygit
+  block:
+    - name: Get lazygit release information
+      ansible.builtin.command: curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
+      register: lazygit_release_info
 
-- name: Clean up tarball
-  ansible.builtin.file:
-    path: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
-    state: absent
+    - name: Extract lazygit version from release information
+      ansible.builtin.set_fact:
+        lazygit_version: "{{ lazygit_release_info.stdout | regex_search('\"tag_name\": \"v(.*)\"') | regex_replace('\"tag_name\": \"v(.*)\"', '\\1') }}"
 
-- name: Clean up binary
-  ansible.builtin.file:
-    path: "/tmp/lazygit"
-    state: absent
+    - name: Clean up tarball
+      ansible.builtin.file:
+        path: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
+        state: absent
 
-- name: Get lazygit tarball
-  uri:
-    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
-    dest: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
+    - name: Clean up binary
+      ansible.builtin.file:
+        path: "/tmp/lazygit"
+        state: absent
 
-- name: Extract lazygit from tarball
-  shell: >
-    tar xf /tmp/lazygit_{{ lazygit_version }}.tar.gz -C /tmp
-  become: yes
+    - name: Get lazygit tarball
+      uri:
+        url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+        dest: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
 
-- name: Install lazygit to /usr/local/bin
-  become: yes
-  ansible.builtin.copy:
-    src: "/tmp/lazygit"
-    dest: "/usr/local/bin/lazygit"
-    mode: "0755"
+    - name: Extract lazygit from tarball
+      shell: >
+        tar xf /tmp/lazygit_{{ lazygit_version }}.tar.gz -C /tmp
+      become: yes
+
+    - name: Install lazygit to /usr/local/bin
+      become: yes
+      ansible.builtin.copy:
+        src: "/tmp/lazygit"
+        dest: "/usr/local/bin/lazygit"
+        mode: "0755"
+  when: lazygit_check.rc != 0
