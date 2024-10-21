@@ -24,7 +24,7 @@
 
 - name: Extract lazygit from tarball
   shell: >
-    tar xf /tmp/lazygit_{{ lazygit_version }}.tar.gz /tmp/lazygit
+    tar xf /tmp/lazygit_{{ lazygit_version }}.tar.gz -C /tmp
   become: yes
 
 - name: Install lazygit to /usr/local/bin

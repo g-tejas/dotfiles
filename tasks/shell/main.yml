@@ -1,0 +1,14 @@
+---
+- name: Check current shell
+  shell: echo $SHELL
+  register: current_shell
+  changed_when: false
+
+- name: Install zsh
+  become: yes
+  apt:
+    name: zsh
+    state: latest
+  when:
+    - ansible_distribution == "Ubuntu"
+    - "'zsh' not in current_shell.stdout"

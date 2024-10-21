@@ -11,6 +11,9 @@
     - name: Install lazygit
       import_tasks: tasks/git/main.yml
 
+    - name: Install zsh
+      import_tasks: tasks/shell/main.yml
+
     # - name: Install packages with apt (headless)
     #   become: yes
     #   apt:
