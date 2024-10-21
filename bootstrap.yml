@@ -11,19 +11,19 @@
     - name: Install lazygit
       import_tasks: tasks/git/main.yml
 
-    - name: Install zsh
+    - name: Setup shell and terminal
       import_tasks: tasks/shell/main.yml
 
-    # - name: Install packages with apt (headless)
-    #   become: yes
-    #   apt:
-    #     name:
-    #       - git
-    #       - tmux
-    #       - unzip
-    #       - wget
-    #     state: latest
-    #   when: ansible_distribution == "Ubuntu"
+    - name: Install packages with apt (headless)
+      become: yes
+      apt:
+        name:
+          - git
+          - tmux
+          - unzip
+          - wget
+        state: latest
+      when: ansible_distribution == "Ubuntu"
 
     # - name: Install packages with apt
     #   tags: gui
@@ -34,8 +34,8 @@
     #     state: latest
     #   when: ansible_distribution == "Ubuntu"
 
-    # - name: Install neovim
-    #   import_tasks: tasks/nvim/main.yml
+    - name: Install neovim
+      import_tasks: tasks/nvim/main.yml
 
     # - name: Install i3wm
     #   tags: gui
