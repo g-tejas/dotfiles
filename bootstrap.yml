@@ -8,12 +8,6 @@
     dest_key: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
 
   tasks:
-    - name: Install lazygit
-      import_tasks: tasks/git/main.yml
-
-    - name: Setup shell and terminal
-      import_tasks: tasks/shell/main.yml
-
     - name: Install packages with apt (headless)
       become: yes
       apt:
@@ -25,6 +19,16 @@
           - stow
         state: latest
       when: ansible_distribution == "Ubuntu"
+
+    - name: Run stow
+      shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
+      register: result
+      changed_when: 'result.stderr is search("LINK: ")'
+    - name: Install lazygit
+      import_tasks: tasks/git/main.yml
+
+    - name: Setup shell and terminal
+      import_tasks: tasks/shell/main.yml
 
     - name: Install neovim
       import_tasks: tasks/nvim/main.yml
@@ -39,8 +43,3 @@
         path: "{{ git_dir }}"
         state: directory
         mode: 0755
-
-    - name: Run stow
-      shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
-      register: result
-      changed_when: 'result.stderr is search("LINK: ")'
