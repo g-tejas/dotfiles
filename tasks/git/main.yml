@@ -1,0 +1,7 @@
+---
+- name: Install lazygit for Ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+- name: Install lazygit for MacOSX
+  import_tasks: macosx.yml
+  when: ansible_distribution == "MacOSX"

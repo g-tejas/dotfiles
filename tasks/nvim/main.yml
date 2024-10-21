@@ -1,0 +1,9 @@
+---
+- name: Build and install neovim from source in Ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+- name: Install nvim in MacOS
+  import_tasks: macosx.yml
+  when: ansible_distribution == "MacOSX"
+
+

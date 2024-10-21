@@ -1,3 +1,0 @@
-[submodule "deps/neovim"]
-	path = deps/neovim
-	url = https://github.com/neovim/neovim

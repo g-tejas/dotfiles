@@ -1,0 +1,5 @@
+- name: Install lazygit with homebrew in MacOSX
+  community.general.homebrew:
+    name:
+      - jesseduffield/lazygit/lazygit
+    state: present

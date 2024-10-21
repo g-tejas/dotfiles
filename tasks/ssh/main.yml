@@ -1,0 +1,30 @@
+---
+- name: Clone the dotfiles repository
+  git:
+    repo: https://github.com/g-tejas/dotfiles.git
+    dest: "{{ dotfiles_dir }}"
+- name: Ensure the SSH directory exists
+  become_user: root
+  file:
+    dest: "{{ dest_key | dirname }}"
+    state: directory
+    mode: 0700
+- name: Decrypt the SSH key
+  command: ansible-vault decrypt "{{ source_key }}" --output="{{ dest_key }}"
+  become_user: root
+- name: Copy over the public key
+  copy:
+    src: "{{ source_key }}.pub"
+    dest: "{{ dest_key }}.pub"
+    mode: 0600
+- name: Set permissions for the decrypted key
+  ansible.builtin.file:
+    path: "{{ dest_key }}.pub"
+    mode: 0600
+- name: Set authorized key
+  authorized_key:
+    user: "{{ lookup('env', 'USER') }}"
+    state: present
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+    - "{{ dotfiles_dir }}/ssh/*.pub"
