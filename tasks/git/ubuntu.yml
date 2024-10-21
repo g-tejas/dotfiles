@@ -24,3 +24,13 @@
     src: "/tmp/lazygit"
     dest: "/usr/local/bin/lazygit"
     mode: "0755"
+
+- name: Clean up tarball
+  ansible.builtin.file:
+    path: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
+    state: absent
+
+- name: Clean up binary
+  ansible.builtin.file:
+    path: "/tmp/lazygit"
+    state: absent
