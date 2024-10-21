@@ -17,6 +17,7 @@
           - unzip
           - wget
           - stow
+          - i3blocks
         state: latest
       when: ansible_distribution == "Ubuntu"
 
