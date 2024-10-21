@@ -20,9 +20,16 @@
     - ansible_distribution == "Ubuntu"
     - "'zsh' not in current_shell.stdout"
 
+- name: Check if Oh My Zsh is installed
+  shell: omz version
+  register: omz_check
+  changed_when: false
+  failed_when: false
+
 - name: Install oh-my-zsh
   shell: |
     sh -c "$(curl -fsSL https://install.ohmyz.sh)"
+  when: omz_check.rc != 0
 
 - name: Configure wezterm apt repo
   become: yes
