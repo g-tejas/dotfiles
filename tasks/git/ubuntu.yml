@@ -23,13 +23,13 @@
     dest: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
 
 - name: Extract lazygit from tarball
-  ansible.builtin.unarchive:
-    src: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
-    dest: "/tmp"
-    extra_opts: [--strip-components=1]
-# - name: Install lazygit to /usr/local/bin
-#   become: yes
-#   ansible.builtin.copy:
-#     src: "/tmp/lazygit"
-#     dest: "/usr/local/bin/lazygit"
-#     mode: "0755"
+  shell: >
+    tar xf /tmp/lazygit_{{ lazygit_version }}.tar.gz /tmp/lazygit
+  become: yes
+
+- name: Install lazygit to /usr/local/bin
+  become: yes
+  ansible.builtin.copy:
+    src: "/tmp/lazygit"
+    dest: "/usr/local/bin/lazygit"
+    mode: "0755"
