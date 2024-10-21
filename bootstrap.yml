@@ -26,27 +26,19 @@
         state: latest
       when: ansible_distribution == "Ubuntu"
 
-    # - name: Install packages with apt
-    #   tags: gui
-    #   become: yes
-    #   apt:
-    #     name:
-    #       - wezterm
-    #     state: latest
-    #   when: ansible_distribution == "Ubuntu"
-
     - name: Install neovim
       import_tasks: tasks/nvim/main.yml
 
-    # - name: Install i3wm
-    #   tags: gui
-    #   import_tasks: tasks/i3wm.yml
-    #   when: ansible_distribution == "Ubuntu"
-    # - name: Create ~/git directory
-    #   file:
-    #     path: "{{ git_dir }}"
-    #     state: directory
-    #     mode: 0755
+    - name: Install i3wm
+      tags: gui
+      import_tasks: tasks/i3wm.yml
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Create ~/git directory
+      file:
+        path: "{{ git_dir }}"
+        state: directory
+        mode: 0755
 
     - name: Run stow
       shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
