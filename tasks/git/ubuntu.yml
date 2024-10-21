@@ -1,17 +1,20 @@
 ---
-- name: Get lazygit version
-  ansible.builtin.command: >
-    curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*'
-  register: lazygit_version
+- name: Get lazygit release information
+  ansible.builtin.command: curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
+  register: lazygit_release_info
+
+- name: Extract lazygit version from release information
+  ansible.builtin.set_fact:
+    lazygit_version: "{{ lazygit_release_info.stdout | regex_search('\"tag_name\": \"v(.*)\"') | regex_replace('\"tag_name\": \"v(.*)\"', '\\1') }}"
 
 - name: Get lazygit tarball
   uri:
-    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_release.json.tag_name }}_Linux_x86_64.tar.gz"
-    dest: "/tmp/lazygit_{{ lazygit_release.json.tag_name }}.tar.gz"
+    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+    dest: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
 
 - name: Extract lazygit from tarball
   ansible.builtin.unarchive:
-    src: "/tmp/lazygit_{{ lazygit_release.json.tag_name }}.tar.gz"
+    src: "/tmp/lazygit_{{ lazygit_version }}.tar.gz"
     dest: "/tmp"
     extra_opts: [--strip-components=1]
 
