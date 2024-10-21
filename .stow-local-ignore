@@ -1,4 +1,3 @@
-cht.sh
 ssh
 sesh.sh
 \.DS_Store
@@ -11,3 +10,6 @@ README.md
 # Ansible stuff
 tasks
 bootstrap.yml
+
+# tmux stuff
+cht.sh

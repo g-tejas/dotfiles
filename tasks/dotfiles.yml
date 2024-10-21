@@ -1,0 +1,17 @@
+- name: Install stow on Ubuntu
+  when: ansible_distribution == "Ubuntu"
+  become: true
+  apt:
+    name:
+      - stow
+
+- name: Install stow on MacOSX
+  when: ansible_distribution == "MacOSX"
+  community.general.homebrew:
+    name: stow
+    state: latest
+
+- name: Run stow
+  shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
+  register: result
+  changed_when: 'result.stderr is search("LINK: ")'

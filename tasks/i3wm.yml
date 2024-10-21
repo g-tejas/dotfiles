@@ -21,7 +21,10 @@
       apt:
         update_cache: yes
 
-    - name: Install i3
+    - name: Install i3 and dependencies
       apt:
-        name: i3
+        name:
+          - i3
+          - i3blocks
+          - rofi
         state: present
