@@ -22,6 +22,7 @@
           - tmux
           - unzip
           - wget
+          - stow
         state: latest
       when: ansible_distribution == "Ubuntu"
 
@@ -46,3 +47,8 @@
     #     path: "{{ git_dir }}"
     #     state: directory
     #     mode: 0755
+
+    - name: Run stow
+      shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
+      register: result
+      changed_when: 'result.stderr is search("LINK: ")'

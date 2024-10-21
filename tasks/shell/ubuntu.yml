@@ -20,6 +20,10 @@
     - ansible_distribution == "Ubuntu"
     - "'zsh' not in current_shell.stdout"
 
+- name: Install oh-my-zsh
+  shell: |
+    sh -c "$(curl -fsSL https://install.ohmyz.sh)"
+
 - name: Configure wezterm apt repo
   become: yes
   shell: |

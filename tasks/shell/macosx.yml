@@ -5,6 +5,5 @@
     state: latest
 
 - name: Install oh-my-zsh
-  homebrew:
-    name: oh-my-zsh
-    state: present
+  shell: |
+    sh -c "$(curl -fsSL https://install.ohmyz.sh)"

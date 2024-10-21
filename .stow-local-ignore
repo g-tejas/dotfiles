@@ -1,0 +1,15 @@
+cht.sh
+ssh
+sesh.sh
+\.DS_Store
+
+# Git stuff
+.gitmodules
+.git
+README.md
+
+# Ansible stuff
+tasks
+bootstrap.yml
+
+.zshrc
