@@ -15,3 +15,4 @@
   shell: "stow . --target {{ ansible_env.HOME }} --verbose=2"
   register: result
   changed_when: 'result.stderr is search("LINK: ")'
+  failed_when: false

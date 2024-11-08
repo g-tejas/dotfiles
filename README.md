@@ -1,18 +1,20 @@
 run this
 
-```
-ansible-playbook --ask-become-pass bootstrap.yml
-```
+## philosophy
+- use `stow` to manage dotfiles
+- bootstrap script should have "no" dependencies
+- use `ansible-vault` to manage secrets
+- no tmux for now. little use for terminal multiplexing.
+- works only on ubuntu for now.
 
-## If running locally
+## todo
+- Install `atuin`
+- [Rice i3](https://www.youtube.com/watch?v=ARKIwOlazKI&list=PL5ze0DjYv5DbCv9vNEzFmP6sU7ZmkGzcf)
 
-```bash
-bash local.sh
-```
+## neovim plugins
+- surround
+- oil.nvim
+- vim-commentary
+- vscode theme
 
-##
-
-```bash
-ansible-playbook -i hosts bootstrap.yml
-```
-
+For some reason, keymaps on wezterm doesn't work for me

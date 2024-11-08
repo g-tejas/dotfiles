@@ -1,7 +1,7 @@
 ---
 - name: Setup shell for MacOSX
   import_tasks: macosx.yml
-  when: ansible_os_family == "MacOSX"
+  when: ansible_distribution == "MacOSX"
 
 - name: Setup shell for Ubuntu
   import_tasks: ubuntu.yml
